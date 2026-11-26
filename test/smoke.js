@@ -133,6 +133,30 @@ async function run(viewport, label) {
   const t = await page.evaluate(() => window.__sas.mission.title);
   assert(t === 'Smoke Test', `${label}: mission restored after reload`);
 
+  // mission index
+  await page.click('.tabs a[data-view="missions"]');
+  await page.waitForTimeout(400);
+  const total = await page.$$eval('.mcard', c => c.length);
+  assert(total >= 29, `${label}: mission index lists ${total} missions`);
+  await page.fill('#mSearch', 'fortress');
+  await page.waitForTimeout(150);
+  assert((await page.$$eval('.mcard', c => c.length)) === 1, `${label}: mission search`);
+  await page.fill('#mSearch', '');
+  await page.selectOption('#fSeries', 'Kickstarter');
+  assert((await page.$$eval('.mcard', c => c.length)) === 6, `${label}: series filter`);
+  await page.click('.mcard');
+  await page.waitForTimeout(200);
+  assert(await page.isVisible('#missionDlg'), `${label}: mission detail opens`);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-mission.png` });
+  await page.click('#missionDlg [data-template]');
+  await page.waitForTimeout(500);
+  const tt = await page.evaluate(() => window.__sas.mission.title);
+  assert(/variant$/.test(tt), `${label}: template starts a new mission`);
+  await page.click('.tabs a[data-view="missions"]');
+  await page.waitForTimeout(300);
+  await page.click('#mClear');
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-missions.png` });
+
   // about page
   await page.click('.tabs a[data-view="about"]');
   await page.waitForTimeout(300);

@@ -3,22 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SAS: Rogue Regiment mission designer</title>
+<title>SAS: Rogue Regiment fan tools: mission designer and mission index</title>
 <meta name="description" content="Fan-made mission designer for SAS: Rogue Regiment. Build maps from the game's tiles, place units and objectives, and print mission sheets.">
 <meta name="theme-color" content="#231f20">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=8558a541">
+<link rel="stylesheet" href="css/styles.css?v=9962243d">
 <script>try{const t=localStorage.getItem('sas-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="#designer" aria-label="SAS: Rogue Regiment tools">
     <span class="brand-mark">SAS</span>
-    <span class="brand-text"><b>Rogue Regiment</b><small>Mission designer</small></span>
+    <span class="brand-text"><b>Rogue Regiment</b><small>Fan tools</small></span>
   </a>
   <nav class="tabs" aria-label="Sections">
     <a href="#designer" data-view="designer">Designer</a>
+    <a href="#missions" data-view="missions">Missions</a>
     <a href="#about" data-view="about">About</a>
   </nav>
   <button class="icon-btn theme-btn" id="themeBtn" type="button" title="Switch light or dark" aria-label="Switch light or dark mode">
@@ -134,12 +135,47 @@
   </nav>
 </section>
 
+<!-- MISSIONS -->
+<section id="view-missions" class="view missions" hidden>
+  <div class="mwrap">
+    <div class="mhead">
+      <h1>Mission index</h1>
+      <p class="muted">Every published mission, searchable and filterable. Tap a mission for its setup. The full briefing is in your mission book.</p>
+    </div>
+    <div class="mfilters">
+      <input type="search" id="mSearch" placeholder="Search title, units, objectives" aria-label="Search missions">
+      <select id="fSeries" aria-label="Series"></select>
+      <select id="fType" aria-label="Mission type"></select>
+      <select id="fDeck" aria-label="Event deck"></select>
+      <select id="fOps" aria-label="Operators"></select>
+      <select id="fSize" aria-label="Map size"></select>
+      <select id="fTag" aria-label="Feature"></select>
+      <select id="mSort" aria-label="Sort">
+        <option value="book">Book order</option>
+        <option value="title">Title A to Z</option>
+        <option value="opsUp">Fewest Operators</option>
+        <option value="sizeUp">Smallest map</option>
+        <option value="sizeDown">Largest map</option>
+      </select>
+      <details class="owned">
+        <summary><label class="check" onclick="event.stopPropagation()"><input type="checkbox" id="fOwned"> Only what I own</label></summary>
+        <div id="ownedList"></div>
+      </details>
+      <button type="button" class="btn small" id="mClear">Clear</button>
+    </div>
+    <p class="mcount" id="mCount" aria-live="polite"></p>
+    <div class="mgrid" id="mGrid"></div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="view-about" class="view about" hidden>
   <article class="prose">
     <h1>About</h1>
     <p>A fan-made mission designer for <b>SAS: Rogue Regiment</b>, the solo and co-operative WW2 stealth game designed by Robert Butler and published by Word Forge Games. Build a map from the game's double-sided tiles, place Operators, Axis units, vehicles and objectives, draw patrol and convoy routes, and print a mission sheet laid out like the ones in the mission book.</p>
-    <h2>How to use it</h2>
+    <h2>Mission index</h2>
+    <p>The Missions page lists every mission in the SAS mission book (core, They Who Dare, Heavy Metal, Hot Dogs, Jäger, Kickstarter and Black Box) and SAS Declassified. Search by name, unit or objective, and filter by series, type, event deck, Operators, map size or feature. Tick "Only what I own" to hide missions that need expansions you don't have. Summaries are short and spoiler-light; the full briefing is in your book. "Use as a template" starts a new design with that mission's setup.</p>
+    <h2>How to use the designer</h2>
     <ul>
       <li>Pick a map tile under Pieces and tap a dashed slot. Select a tile, then drag it to move it. Use Flip for the other side and Rotate to turn it.</li>
       <li>Units stay picked so you can place several in a row. Tap Done when finished. Guards and other Axis units can be rotated to show their facing.</li>
@@ -163,9 +199,13 @@
   <ul id="missionsList" class="mlist"></ul>
   <div class="dlg-foot"><button type="button" class="btn" id="backupBtn2">Back up all</button><button type="button" class="btn" id="importBtn2">Import...</button></div>
 </dialog>
+<dialog id="missionDlg" class="dlg wide">
+  <div class="dlg-head"><h2></h2><button type="button" class="icon-btn" data-close-dlg aria-label="Close">&times;</button></div>
+  <div class="mdetail"></div>
+</dialog>
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div id="printArea" aria-hidden="true"></div>
-<script type="module" src="js/app.js?v=8558a541"></script>
+<script type="module" src="js/app.js?v=9962243d"></script>
 </body>
 </html>

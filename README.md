@@ -14,6 +14,8 @@ Live at https://sas.skirmishgames.app
 - See and print a mission sheet laid out like the mission book, with the key built from the pieces on the map.
 - Missions save in the browser. Export a mission file, a share link, the sheet as PNG, or the map on its own.
 
+The Missions page indexes every published mission with search and filters (series, type, event deck, Operators, map size, features, owned expansions).
+
 Works on phones and desktop. Nothing is sent to a server.
 
 ## Credits

@@ -1,7 +1,8 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=8558a541';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=8558a541';
-import { renderSheet, fontsReady } from './sheet.js?v=8558a541';
-import * as store from './store.js?v=8558a541';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=9962243d';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=9962243d';
+import { renderSheet, fontsReady } from './sheet.js?v=9962243d';
+import { initMissions } from './missions.js?v=9962243d';
+import * as store from './store.js?v=9962243d';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -415,7 +416,7 @@ $('#board').addEventListener('pointerup', () => setTimeout(updateBrushBar, 0));
 function route() {
   const h = location.hash.replace(/^#/, '');
   const view = h.split('&')[0] || 'designer';
-  const v = ['designer', 'about'].includes(view) ? view : 'designer';
+  const v = ['designer', 'missions', 'about'].includes(view) ? view : 'designer';
   $$('.view').forEach(s => { s.hidden = s.id !== 'view-' + v; });
   $$('.tabs a').forEach(a => { if (a.dataset.view === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   if (v === 'designer') editor.resize();
@@ -428,8 +429,21 @@ $('#themeBtn').addEventListener('click', () => {
 window.addEventListener('beforeunload', () => { if (dirty) store.putMission(m); });
 
 // ---------- start ----------
+async function useTemplate(src) {
+  if (dirty) await save();
+  const mm = blankMission();
+  Object.assign(mm, { title: `${src.title} variant`, type: src.type, major: src.major || '', minor: src.minor || '',
+    setup: { operators: src.operators || '', deck: src.deck || '', window: src.window || '', note: '' },
+    stealth: { easy: src.stealth?.easy ?? '', normal: src.stealth?.normal ?? '', hard: src.stealth?.hard ?? '' },
+    briefing: `Based on ${src.title} (${src.source}${src.page ? ' p.' + src.page : ''}).` });
+  loadMission(mm); await save();
+  location.hash = '#designer';
+  toast(`New mission started from ${src.title}: setup, victory points and stealth copied. Build the map from the mission page.`, 6000);
+}
+
 async function start() {
   buildPalette();
+  initMissions({ template: useTemplate });
   route();
   const share = (location.hash.match(/[&#]m=([A-Za-z0-9_-]+)/) || [])[1];
   if (share) {
