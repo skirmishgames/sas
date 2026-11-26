@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-CA" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SAS: Rogue Regiment mission designer</title>
+<meta name="description" content="Fan-made mission designer for SAS: Rogue Regiment. Build maps from the game's tiles, place units and objectives, and print mission sheets.">
+<meta name="theme-color" content="#231f20">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/styles.css?v=2a0407ed">
+<script>try{const t=localStorage.getItem('sas-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#designer" aria-label="SAS: Rogue Regiment tools">
+    <span class="brand-mark">SAS</span>
+    <span class="brand-text"><b>Rogue Regiment</b><small>Mission designer</small></span>
+  </a>
+  <nav class="tabs" aria-label="Sections">
+    <a href="#designer" data-view="designer">Designer</a>
+    <a href="#about" data-view="about">About</a>
+  </nav>
+  <button class="icon-btn theme-btn" id="themeBtn" type="button" title="Switch light or dark" aria-label="Switch light or dark mode">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+  </button>
+</header>
+
+<main>
+<!-- DESIGNER -->
+<section id="view-designer" class="view designer" data-mode="board">
+  <div class="toolbar">
+    <input id="titleInput" class="title-input" type="text" placeholder="Untitled mission" aria-label="Mission name" maxlength="60">
+    <div class="tb-group">
+      <button type="button" class="btn" id="newBtn" title="New mission">New</button>
+      <button type="button" class="btn" id="openBtn" title="My missions">My missions</button>
+      <span class="save-state" id="saveState" aria-live="polite"></span>
+    </div>
+    <div class="tb-group">
+      <button type="button" class="icon-btn" id="undoBtn" title="Undo (Ctrl+Z)" aria-label="Undo"><svg viewBox="0 0 24 24"><path d="M9 7H4V2M4 7a9 9 0 1 1-1.5 7"/></svg></button>
+      <button type="button" class="icon-btn" id="redoBtn" title="Redo (Ctrl+Y)" aria-label="Redo"><svg viewBox="0 0 24 24"><path d="M15 7h5V2m0 5a9 9 0 1 0 1.5 7"/></svg></button>
+    </div>
+    <div class="seg" role="tablist" aria-label="View">
+      <button type="button" role="tab" data-mode="board" aria-selected="true">Board</button>
+      <button type="button" role="tab" data-mode="sheet" aria-selected="false">Mission sheet</button>
+    </div>
+    <div class="tb-group menu-wrap">
+      <button type="button" class="btn primary" id="exportBtn" aria-haspopup="true">Export</button>
+      <div class="menu" id="exportMenu" hidden>
+        <button type="button" data-act="sheet-png">Mission sheet (PNG)</button>
+        <button type="button" data-act="print">Print mission sheet</button>
+        <button type="button" data-act="map-png">Map only (PNG)</button>
+        <hr>
+        <button type="button" data-act="share">Copy share link</button>
+        <button type="button" data-act="json">Save mission file (.json)</button>
+        <button type="button" data-act="import">Open mission file...</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="palette panel" id="palette" aria-label="Pieces">
+    <div class="panel-head"><h2>Pieces</h2><button type="button" class="icon-btn close-drawer" data-close="palette" aria-label="Close">&times;</button></div>
+    <input type="search" id="paletteSearch" placeholder="Search pieces" aria-label="Search pieces">
+    <div id="paletteBody"></div>
+  </aside>
+
+  <div class="stage" id="stage">
+    <canvas id="board" aria-label="Mission map editor"></canvas>
+    <div class="empty-hint" id="emptyHint">
+      <h3>Build your map</h3>
+      <p>Pick a map tile, then tap a dashed slot. Missions in the book use 4, 6 or 9 tiles.</p>
+      <div class="hint-btns"><button type="button" class="btn" data-quick="2x2">Start 2 x 2</button><button type="button" class="btn" data-quick="3x2">Start 3 x 2</button><button type="button" class="btn" data-quick="3x3">Start 3 x 3</button></div>
+    </div>
+    <div class="brush-bar" id="brushBar" hidden>
+      <span id="brushLabel"></span>
+      <button type="button" class="btn small" id="brushDone">Done</button>
+    </div>
+    <div class="zoom-ctl">
+      <button type="button" class="icon-btn" id="zoomIn" aria-label="Zoom in">+</button>
+      <button type="button" class="icon-btn" id="zoomOut" aria-label="Zoom out">&minus;</button>
+      <button type="button" class="icon-btn" id="fitBtn" aria-label="Fit map" title="Fit map"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
+    <div class="sheet-wrap" id="sheetWrap"><div class="sheet-status" id="sheetStatus">Drawing sheet</div><img id="sheetImg" alt="Mission sheet preview"></div>
+  </div>
+
+  <aside class="side panel" id="side" aria-label="Details">
+    <div class="panel-head">
+      <div class="seg small" role="tablist">
+        <button type="button" role="tab" data-side="sel" aria-selected="true">Selected</button>
+        <button type="button" role="tab" data-side="mission" aria-selected="false">Mission</button>
+      </div>
+      <button type="button" class="icon-btn close-drawer" data-close="side" aria-label="Close">&times;</button>
+    </div>
+    <div class="side-body" id="sideSel"></div>
+    <form class="side-body mission-form" id="sideMission" hidden autocomplete="off">
+      <label>Mission number <input name="number" type="text" maxlength="6" placeholder="Optional, e.g. 12"></label>
+      <label>Mission type
+        <input name="type" list="typeList" maxlength="24" placeholder="Raid">
+        <datalist id="typeList"></datalist>
+      </label>
+      <label>Opening quote <textarea name="quote" rows="3" placeholder="Right then chaps..."></textarea></label>
+      <label>Quote by <input name="speaker" type="text" maxlength="40" placeholder="Jock"></label>
+      <label>Briefing <textarea name="briefing" rows="7" placeholder="Operators begin at their entry/exit tile. Their mission is to..."></textarea>
+        <small>Blank line starts a new paragraph. Wrap words in **double asterisks** for bold.</small></label>
+      <div class="two">
+        <label>Major victory <input name="major" type="text" maxlength="20" placeholder="11 points"></label>
+        <label>Minor victory <input name="minor" type="text" maxlength="20" placeholder="9 points"></label>
+      </div>
+      <fieldset>
+        <legend>Recommended setup</legend>
+        <label>Operators <input name="setup.operators" type="text" maxlength="40"></label>
+        <label>Event deck <input name="setup.deck" list="deckList" maxlength="30"><datalist id="deckList"></datalist></label>
+        <label>Event window <input name="setup.window" type="text" maxlength="20" placeholder="None, or 18/6"></label>
+        <label>Setup note <textarea name="setup.note" rows="2" placeholder="*Operators Jock & Anders begin the game in the Willys Jeep."></textarea></label>
+      </fieldset>
+      <fieldset>
+        <legend>Stealth tracker</legend>
+        <div class="three">
+          <label>Easy <input name="stealth.easy" type="number" min="1" max="9"></label>
+          <label>Normal <input name="stealth.normal" type="number" min="1" max="9"></label>
+          <label>Hard <input name="stealth.hard" type="number" min="1" max="9"></label>
+        </div>
+      </fieldset>
+      <label>Designed by <input name="author" type="text" maxlength="40" placeholder="Your name or handle"></label>
+      <div class="advice" id="advice"></div>
+    </form>
+  </aside>
+
+  <nav class="mobile-bar" aria-label="Designer panels">
+    <button type="button" data-open="palette">Pieces</button>
+    <button type="button" data-open="side" data-side-open="sel">Selected</button>
+    <button type="button" data-open="side" data-side-open="mission">Mission</button>
+  </nav>
+</section>
+
+<!-- ABOUT -->
+<section id="view-about" class="view about" hidden>
+  <article class="prose">
+    <h1>About</h1>
+    <p>A fan-made mission designer for <b>SAS: Rogue Regiment</b>, the solo and co-operative WW2 stealth game designed by Robert Butler and published by Word Forge Games. Build a map from the game's double-sided tiles, place Operators, Axis units, vehicles and objectives, draw patrol and convoy routes, and print a mission sheet laid out like the ones in the mission book.</p>
+    <h2>How to use it</h2>
+    <ul>
+      <li>Pick a map tile under Pieces and tap a dashed slot. Select a tile, then drag it to move it. Use Flip for the other side and Rotate to turn it.</li>
+      <li>Units stay picked so you can place several in a row. Tap Done when finished. Guards and other Axis units can be rotated to show their facing.</li>
+      <li>Choose a role (Patrol, Convoy, Guard, Assault or Scout) for each Axis vehicle. The border colour and the key label follow the mission book.</li>
+      <li>Draw routes square by square, then tap Finish.</li>
+      <li>Fill in the Mission tab. The mission sheet builds its key from the pieces on the map.</li>
+      <li>Your missions save in this browser. Use Export to keep a mission file, share a link, or print.</li>
+    </ul>
+    <h2>Credits</h2>
+    <p>SAS: Rogue Regiment, its art, tiles and tokens are the property of Robert Butler and Word Forge Games, used with permission. The piece art comes from the community map editor toolkits: the TileSystem SAS map editor set by Magnus G (MagWiz), and the SAS Map Editor by Paul Manley (Triskelion Games) with additions by Paolo Roscio. Robert Butler supplied the original assets for both.</p>
+    <p>Fonts: Russo One by Jovanny Lemonad and Lato by Łukasz Dziedzic, both under the SIL Open Font License.</p>
+    <p>This site is not affiliated with Word Forge Games. Please support the designer by buying the game.</p>
+    <p>Made by <a href="https://boardgamegeek.com/profile/slyfoxbgg" target="_blank" rel="noopener">Ivan</a>. Contact: <a href="mailto:skirmishgames.app@gmail.com">skirmishgames.app@gmail.com</a>. More tools at <a href="https://skirmishgames.app">skirmishgames.app</a>.</p>
+  </article>
+</section>
+</main>
+
+<dialog id="missionsDlg" class="dlg">
+  <div class="dlg-head"><h2>My missions</h2><button type="button" class="icon-btn" data-close-dlg aria-label="Close">&times;</button></div>
+  <p class="muted">Saved in this browser only. Save a mission file to keep a copy or move it to another device.</p>
+  <ul id="missionsList" class="mlist"></ul>
+  <div class="dlg-foot"><button type="button" class="btn" id="importBtn2">Open mission file...</button></div>
+</dialog>
+<input type="file" id="fileInput" accept=".json,application/json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div id="printArea" aria-hidden="true"></div>
+<script type="module" src="js/app.js?v=2a0407ed"></script>
+</body>
+</html>
