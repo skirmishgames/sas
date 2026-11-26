@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#231f20">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=515fc801">
+<link rel="stylesheet" href="css/styles.css?v=688f7e9d">
 <script>try{const t=localStorage.getItem('sas-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
@@ -21,6 +21,7 @@
     <a href="#designer" data-view="designer"><span class="lg">Designer</span><span class="sm">Design</span></a>
     <a href="#missions" data-view="missions">Missions</a>
     <a href="#ops" data-view="ops">Fan Ops</a>
+    <a href="#submit" data-view="submit" class="wide-only">Submit</a>
     <a href="#faq" data-view="faq">FAQ</a>
     <a href="#about" data-view="about">About</a>
   </nav>
@@ -57,6 +58,8 @@
         <button type="button" data-act="share">Copy share link</button>
         <button type="button" data-act="json">This mission as a file (.json)</button>
         <button type="button" data-act="backup">Back up all missions (.json)</button>
+        <hr>
+        <button type="button" data-act="submit">Submit to Fan Ops...</button>
       </div>
     </div>
   </div>
@@ -175,7 +178,7 @@
     <div class="mhead">
       <h1>Fan Ops</h1>
       <p>New missions made by the community, free to play and print. Open one in the designer to see the full map and print its mission sheet. A mission shows <b>Needs playtest</b> until it has been played and reported 3 times, then it is marked <b>Playtested</b>. Played one? Use <b>Send feedback</b>: it opens an email with the questions already filled in.</p>
-      <p class="muted">Made your own mission? Export it from the designer as a file and email it to <a href="mailto:skirmishgames.app@gmail.com?subject=SAS%20Fan%20Ops%20submission">skirmishgames.app@gmail.com</a> with a line about it. Missions that use expansions are welcome; say which ones.</p>
+      <p><a class="btn primary" href="#submit">Submit your mission</a></p>
     </div>
     <div class="mfilters">
       <input type="search" id="opsSearch" placeholder="Search fan missions" aria-label="Search fan missions">
@@ -184,6 +187,61 @@
     </div>
     <p class="mcount" id="opsCount" aria-live="polite"></p>
     <div class="mgrid" id="opsGrid"></div>
+  </div>
+</section>
+
+<!-- SUBMIT -->
+<section id="view-submit" class="view submit" hidden>
+  <div class="mwrap narrow">
+    <div class="mhead">
+      <h1>Submit your mission</h1>
+      <p>Made a mission you're proud of? Send it in and it can join <a href="#ops">Fan Ops</a> for everyone to play. It goes up marked Needs playtest, with your name on it, and gets tuned from player feedback.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <h2>Finish it in the designer</h2>
+        <p>Open your mission in the <a href="#designer">Designer</a> and fill in the Mission tab: mission type, opening quote, briefing, major and minor victory, recommended setup, the stealth tracker, and Designed by. Check the Mission sheet view to see how it prints.</p>
+      </li>
+      <li>
+        <h2>Download the mission file</h2>
+        <p>Pick your mission and download its file. It ends in <code>.sasmission.json</code> and holds the whole mission: map, pieces, routes and text. That is all that is needed to add it to the site.</p>
+        <div class="subrow">
+          <select id="subMission" aria-label="Saved mission"></select>
+          <button type="button" class="btn primary" id="subDownload" disabled>Download mission file</button>
+        </div>
+        <p class="note" id="subPicked"></p>
+        <p class="note">Another way: in the Designer choose Export, then "This mission as a file (.json)". Missions are saved in the browser you made them in, so use the same browser and device.</p>
+      </li>
+      <li>
+        <h2>Tell us about it</h2>
+        <div class="subform">
+          <div class="two">
+            <label>Mission title <input id="subTitle" maxlength="60" required></label>
+            <label>Mission type <input id="subType" maxlength="24" list="typeList" placeholder="Raid"></label>
+          </div>
+          <div class="two">
+            <label>Credit me as <input id="subCredit" maxlength="40" placeholder="Name or handle" required></label>
+            <label>BGG username (optional) <input id="subBgg" maxlength="40"></label>
+          </div>
+          <fieldset><legend>Components needed</legend><div class="needs" id="subNeeds"></div></fieldset>
+          <label>Times played so far
+            <select id="subPlayed"><option>Not yet</option><option>Once</option><option>2 times</option><option>3 or more times</option></select>
+          </label>
+          <label>Premise <textarea id="subPremise" rows="2" maxlength="300" placeholder="One or two sentences for the Fan Ops card. No spoilers."></textarea></label>
+          <label>What should playtesters watch for? <textarea id="subFocus" rows="3" maxlength="600" placeholder="e.g. Is the event window too tight? Can the guards on the bridge be avoided?"></textarea></label>
+          <label>Anything else <textarea id="subNotes" rows="2" maxlength="600"></textarea></label>
+          <label class="check"><input type="checkbox" id="subConsent"> I designed this mission (or have the designer's permission) and I'm happy for it to be published here with credit.</label>
+        </div>
+      </li>
+      <li>
+        <h2>Email it</h2>
+        <p>The button opens your email app with the subject and details filled in. <b>Attach the mission file before you send</b>: email links can't attach files for you.</p>
+        <a class="btn primary disabled" id="subEmail" href="#submit" aria-disabled="true">Email my mission</a>
+        <p class="note" id="subHint"></p>
+        <p class="note">No email app on this device? Send the file to <a href="mailto:skirmishgames.app@gmail.com">skirmishgames.app@gmail.com</a> with the subject "SAS Fan Ops submission" and the details above.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
@@ -214,13 +272,7 @@
     <h2>Fan Ops</h2>
     <p>New missions made for the community. Each one is marked Needs playtest until it has 3 playtest reports, and Send feedback opens a ready-made email with the questions for that mission.</p>
     <h2>Submit your mission</h2>
-    <p>Designed a mission you're proud of? Send it in and it can join Fan Ops for others to play and playtest.</p>
-    <ul>
-      <li>In the designer, choose Export, then "This mission as a file (.json)".</li>
-      <li>Email the file to <a href="mailto:skirmishgames.app@gmail.com?subject=SAS%20Fan%20Ops%20submission">skirmishgames.app@gmail.com</a> with the subject "SAS Fan Ops submission".</li>
-      <li>Say how you'd like to be credited, which expansions it needs, and whether you've played it yet.</li>
-    </ul>
-    <p>New missions go up marked Needs playtest and are tuned from player feedback.</p>
+    <p>Designed a mission worth sharing? The <a href="#submit">Submit</a> page walks you through sending it in for Fan Ops.</p>
     <h2>Errata and FAQ</h2>
     <p>The FAQ page carries the official FAQ and errata sheet, searchable and linkable. The two mission errata (Wunderwaffe and Hellraisers) are already applied in the mission index.</p>
     <h2>How to use the designer</h2>
@@ -254,6 +306,6 @@
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script src="vendor/jspdf.umd.min.js" defer></script>
-<script type="module" src="js/app.js?v=515fc801"></script>
+<script type="module" src="js/app.js?v=688f7e9d"></script>
 </body>
 </html>

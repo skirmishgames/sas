@@ -177,6 +177,23 @@ async function run(viewport, label) {
   const opened = await page.evaluate(() => [window.__sas.mission.title, window.__sas.mission.board.tiles.length, location.hash]);
   assert(opened[0] === 'Bird in the Hand' && opened[1] === 6 && opened[2] === '#designer', `${label}: fan mission opens in designer`);
 
+  // Submit page
+  await page.goto(BASE + '#submit');
+  await page.waitForTimeout(700);
+  assert(await page.isVisible('#view-submit'), `${label}: submit page`);
+  assert(await page.$eval('#subEmail', a => a.getAttribute('aria-disabled')) === 'true', `${label}: email button waits for details`);
+  const opts = await page.$$eval('#subMission option', o => o.map(x => x.value).filter(Boolean));
+  assert(opts.length >= 1, `${label}: saved missions listed`);
+  await page.selectOption('#subMission', opts[0]);
+  await page.waitForTimeout(200);
+  const [subDl] = await Promise.all([page.waitForEvent('download'), page.click('#subDownload')]);
+  assert(subDl.suggestedFilename().endsWith('.sasmission.json'), `${label}: mission file from submit page`);
+  await page.fill('#subCredit', 'Tester');
+  await page.check('#subConsent');
+  const mail = decodeURIComponent(await page.$eval('#subEmail', a => a.href));
+  assert(mail.startsWith('mailto:skirmishgames.app@gmail.com') && mail.includes('Credit me as: Tester') && mail.includes('attach'), `${label}: submission email template`);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-submit.png`, fullPage: true });
+
   // FAQ and errata
   await page.click('.tabs a[data-view="faq"]');
   await page.waitForTimeout(300);

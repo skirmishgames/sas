@@ -1,10 +1,11 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=515fc801';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=515fc801';
-import { renderSheet, fontsReady, sheetPdf } from './sheet.js?v=515fc801';
-import { initMissions, detail as missionDetail } from './missions.js?v=515fc801';
-import { initFaq, focusFaq } from './faq.js?v=515fc801';
-import { initFanOps, focusOp } from './fanops.js?v=515fc801';
-import * as store from './store.js?v=515fc801';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=688f7e9d';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=688f7e9d';
+import { renderSheet, fontsReady, sheetPdf } from './sheet.js?v=688f7e9d';
+import { initMissions, detail as missionDetail } from './missions.js?v=688f7e9d';
+import { initFaq, focusFaq } from './faq.js?v=688f7e9d';
+import { initFanOps, focusOp } from './fanops.js?v=688f7e9d';
+import { initSubmit, showSubmit } from './submit.js?v=688f7e9d';
+import * as store from './store.js?v=688f7e9d';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -320,6 +321,7 @@ $('#exportMenu').addEventListener('click', async e => {
     try { await sheetPdf(m, name + '-sheet.pdf'); } catch (err) { toast(err.message); }
   } else if (a.dataset.act === 'json') store.exportJSON(m);
   else if (a.dataset.act === 'backup') backupAll();
+  else if (a.dataset.act === 'submit') { if (dirty) await save(); location.hash = '#submit'; }
   else if (a.dataset.act === 'share') {
     const code = await store.encodeShare(m);
     const url = `${location.origin}${location.pathname}#designer&m=${code}`;
@@ -412,10 +414,11 @@ $('#board').addEventListener('pointerup', () => setTimeout(updateBrushBar, 0));
 function route() {
   const h = location.hash.replace(/^#/, '');
   const view = h.split('&')[0] || 'designer';
-  const v = ['designer', 'missions', 'ops', 'faq', 'about'].includes(view) ? view : 'designer';
+  const v = ['designer', 'missions', 'ops', 'submit', 'faq', 'about'].includes(view) ? view : 'designer';
   $$('.view').forEach(s => { s.hidden = s.id !== 'view-' + v; });
   $$('.tabs a').forEach(a => { if (a.dataset.view === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   if (v === 'designer') editor.resize();
+  if (v === 'submit') showSubmit(m.board.tiles.length || m.board.pieces.length ? m.id : null);
   if (v === 'ops') { const oid = (h.match(/&id=([\w-]+)/) || [])[1]; if (oid) setTimeout(() => focusOp(oid), 80); }
   if (v === 'faq') { const fq = (h.match(/&q=([\w-]+)/) || [])[1]; if (fq) setTimeout(() => focusFaq(fq), 50); }
   if (v !== 'missions' && $('#missionDlg').open) $('#missionDlg').close();
@@ -443,6 +446,7 @@ async function useTemplate(src) {
 async function start() {
   buildPalette();
   initMissions({ template: useTemplate });
+  initSubmit();
   initFanOps({
     parse: store.parseJSON, toast,
     open: async mm => { if (dirty) await save(); loadMission(mm, { keepId: false }); await save(); location.hash = '#designer'; toast(`${mm.title} opened as a new mission in the designer. Your copy is saved under My missions.`, 5000); },

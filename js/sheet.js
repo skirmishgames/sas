@@ -1,7 +1,7 @@
 // Draws a mission sheet in the style of the SAS: Rogue Regiment mission book.
 // Letter page at 150 dpi: 1275 x 1650 px. The page grows taller if the text needs it.
-import { PIECE } from './data/catalog.js?v=515fc801';
-import { boardCanvas, keyLabel, isObjective, drawPiece, pieceSize, img, pieceSrc, preload } from './board.js?v=515fc801';
+import { PIECE } from './data/catalog.js?v=688f7e9d';
+import { boardCanvas, keyLabel, isObjective, drawPiece, pieceSize, img, pieceSrc, preload } from './board.js?v=688f7e9d';
 
 export const C = {
   crimson: '#b00c36', charcoal: '#231f20', olive: '#2f3623', khaki: '#c9c39f',
