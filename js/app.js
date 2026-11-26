@@ -1,11 +1,11 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=3ce8ebc5';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece, loadBoard } from './board.js?v=3ce8ebc5';
-import { renderSheet, fontsReady, sheetPdf } from './sheet.js?v=3ce8ebc5';
-import { initMissions, detail as missionDetail } from './missions.js?v=3ce8ebc5';
-import { initFaq, focusFaq } from './faq.js?v=3ce8ebc5';
-import { initFanOps, focusOp } from './fanops.js?v=3ce8ebc5';
-import { initSubmit, showSubmit } from './submit.js?v=3ce8ebc5';
-import * as store from './store.js?v=3ce8ebc5';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=ece9da5d';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece, loadBoard } from './board.js?v=ece9da5d';
+import { renderSheet, fontsReady, sheetPdf } from './sheet.js?v=ece9da5d';
+import { initMissions, detail as missionDetail } from './missions.js?v=ece9da5d';
+import { initFaq, focusFaq } from './faq.js?v=ece9da5d';
+import { initFanOps, focusOp } from './fanops.js?v=ece9da5d';
+import { initSubmit, showSubmit } from './submit.js?v=ece9da5d';
+import * as store from './store.js?v=ece9da5d';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -83,7 +83,7 @@ function buildPalette() {
       const pic = it.kind === 'marker' ? `<svg viewBox="0 0 40 40" style="width:38px;height:38px"><circle cx="20" cy="20" r="16" fill="#b00c36" stroke="#fff" stroke-width="3"/><text x="20" y="26" font-size="15" text-anchor="middle" fill="#fff" stroke="none" font-family="Russo One">A</text></svg>` : `<img src="${it.src}" alt="" loading="lazy">`;
       return `<button type="button" class="pitem" ${data} title="${esc(it.name)}${it.box ? ' (' + BOXES[it.box] + ')' : ''}">${pic}<span>${esc(it.name)}</span>${it.box && it.box !== 'RR' ? `<span class="box">${esc(BOXES[it.box])}</span>` : ''}</button>`;
     }).join('')}</div>`;
-    if (g.id === 'items') inner += `<p class="note">Custom markers cover pieces without art (snipers, mortar teams, HMG teams). Set the colour and letters after placing.</p>`;
+    if (g.id === 'items') inner += `<p class="note">Use a custom marker for anything else worth pointing out on the map. Set the colour and letters after placing.</p>`;
     return `<details class="pgroup" data-group="${g.id}" ${open.includes(g.id) ? 'open' : ''}><summary>${esc(g.name)}</summary><div class="pbody">${inner}</div></details>`;
   }).join('');
   refreshPalette();

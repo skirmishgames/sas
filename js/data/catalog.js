@@ -22,7 +22,7 @@ for (let n = 1; n <= 12; n++) {
     TILES.push({ id: `${n}${s}`, num: String(n), side: s, name: `Tile ${n}${s}`, src: `assets/tiles/${n}${s}.webp`, box: 'RR' });
   }
 }
-TILES.push({ id: 'bunker', num: 'bunker', side: '', name: 'Bunker', src: 'assets/tiles/bunker.webp', box: null });
+TILES.push({ id: 'bunker', num: 'bunker', side: '', name: 'Bunker', src: 'assets/tiles/bunker.webp', box: 'RR' });
 
 // Vehicle roles. Border colours follow the mission book.
 export const ROLES = {
@@ -103,7 +103,7 @@ export const PIECES = [
   { id: 'seehund-fuel', kind: 'objective', name: 'Seehund / Fuel Truck', w: 2, h: 4, box: 'HD', faces: ['assets/objectives/seehund1.webp', 'assets/objectives/fuel-truck2.webp'], faceNames: ['Seehund', 'Fuel Truck'], max: 1, objective: true },
   { id: 'seehund-roadblock', kind: 'objective', name: 'Seehund / Roadblock', w: 2, h: 3, box: 'HD', faces: ['assets/objectives/seehund2.webp', 'assets/objectives/roadblock.webp'], faceNames: ['Seehund', 'Roadblock'], max: 1 },
 
-  // Free marker for anything without art (sniper, mortar team, HMG team, notes)
+  // Free marker for anything else worth pointing out on the map
   { id: 'marker', kind: 'marker', name: 'Custom marker', key: 'Marker', box: null },
 ];
 

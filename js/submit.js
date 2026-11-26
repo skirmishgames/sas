@@ -1,6 +1,6 @@
 // Submit page: pick a saved mission, download its file, and open a pre-filled email.
-import { listMissions, getMission, exportJSON, slug } from './store.js?v=3ce8ebc5';
-import { EXPANSIONS } from './data/missions.js?v=3ce8ebc5';
+import { listMissions, getMission, exportJSON, slug } from './store.js?v=ece9da5d';
+import { EXPANSIONS } from './data/missions.js?v=ece9da5d';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

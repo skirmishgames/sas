@@ -1,5 +1,5 @@
 // Fan Ops page: fan-made missions with playtest status and feedback by email.
-import { FANOPS, STATUS, PLAYTESTS_NEEDED } from './data/fanops.js?v=3ce8ebc5';
+import { FANOPS, STATUS, PLAYTESTS_NEEDED } from './data/fanops.js?v=ece9da5d';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
