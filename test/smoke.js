@@ -105,6 +105,27 @@ async function run(viewport, label) {
   const back = await page.evaluate(async c => (await import('./js/store.js')).decodeShare(c), code);
   assert(back.title === 'Smoke Test' && back.board.tiles.length === 2, `${label}: share link round trip (${code.length} chars)`);
 
+  // export a backup, then import it and a single mission file
+  if (!phone) {
+    await page.click('#exportBtn');
+    const [dl] = await Promise.all([page.waitForEvent('download'), page.click('[data-act="backup"]')]);
+    const backupPath = await dl.path();
+    const fs = require('fs');
+    const backup = JSON.parse(fs.readFileSync(backupPath, 'utf8'));
+    assert(backup.format === 'sas-rogue-regiment-backup' && backup.missions.length >= 1, 'desktop: backup exported');
+    await page.click('#exportBtn');
+    const [dl2] = await Promise.all([page.waitForEvent('download'), page.click('[data-act="json"]')]);
+    const single = await dl2.path();
+    await page.setInputFiles('#fileInput', single);
+    await page.waitForTimeout(500);
+    const after = await page.evaluate(async () => (await (await import('./js/store.js')).listMissions()).length);
+    assert(after === backup.missions.length + 1, 'desktop: mission file imported as a new mission');
+    await page.setInputFiles('#fileInput', backupPath);
+    await page.waitForTimeout(500);
+    const after2 = await page.evaluate(async () => (await (await import('./js/store.js')).listMissions()).length);
+    assert(after2 === after, 'desktop: backup import restores without duplicates');
+  }
+
   // persistence
   await page.waitForTimeout(1200);
   await page.reload();

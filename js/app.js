@@ -1,7 +1,7 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=2a0407ed';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=2a0407ed';
-import { renderSheet, fontsReady } from './sheet.js?v=2a0407ed';
-import * as store from './store.js?v=2a0407ed';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=8558a541';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=8558a541';
+import { renderSheet, fontsReady } from './sheet.js?v=8558a541';
+import * as store from './store.js?v=8558a541';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -322,7 +322,7 @@ $('#exportMenu').addEventListener('click', async e => {
     await (im.decode ? im.decode().catch(() => {}) : Promise.resolve());
     window.print();
   } else if (a.dataset.act === 'json') store.exportJSON(m);
-  else if (a.dataset.act === 'import') $('#fileInput').click();
+  else if (a.dataset.act === 'backup') backupAll();
   else if (a.dataset.act === 'share') {
     const code = await store.encodeShare(m);
     const url = `${location.origin}${location.pathname}#designer&m=${code}`;
@@ -333,13 +333,31 @@ $('#exportMenu').addEventListener('click', async e => {
 $('#fileInput').addEventListener('change', async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   try {
-    const mm = store.parseJSON(await f.text());
+    const res = store.parseImport(await f.text());
     if (dirty) await save();
-    loadMission(mm, { keepId: false }); await save();
-    $('#missionsDlg').open && $('#missionsDlg').close();
-    toast(`Opened ${mm.title || 'mission'}.`);
+    if (res.backup) {
+      const existing = new Set((await store.listMissions()).map(x => x.id));
+      let added = 0, replaced = 0;
+      for (const mm of res.missions) { if (!mm.id) mm.id = store.newId(); existing.has(mm.id) ? replaced++ : added++; await store.putMission(mm); }
+      const cur = res.missions.find(x => x.id === m.id);
+      if (cur) loadMission(cur);
+      toast(`Backup imported: ${added} new mission${added === 1 ? '' : 's'}${replaced ? `, ${replaced} updated` : ''}.`, 5000);
+      if ($('#missionsDlg').open) openMissions();
+    } else {
+      const mm = res.missions[0];
+      loadMission(mm, { keepId: false }); await save();
+      if ($('#missionsDlg').open) $('#missionsDlg').close();
+      toast(`Imported ${mm.title || 'mission'}.`);
+    }
   } catch (err) { toast(err.message || 'Could not read that file.'); }
 });
+async function backupAll() {
+  if (dirty) await save();
+  const n = await store.exportAll();
+  toast(n ? `Backup of ${n} mission${n === 1 ? '' : 's'} downloaded.` : 'No saved missions to back up yet.');
+}
+$('#importBtn').onclick = () => $('#fileInput').click();
+$('#backupBtn2').onclick = backupAll;
 $('#importBtn2').onclick = () => $('#fileInput').click();
 
 // my missions dialog

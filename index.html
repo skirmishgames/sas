@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#231f20">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=2a0407ed">
+<link rel="stylesheet" href="css/styles.css?v=8558a541">
 <script>try{const t=localStorage.getItem('sas-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
@@ -45,6 +45,7 @@
       <button type="button" role="tab" data-mode="sheet" aria-selected="false">Mission sheet</button>
     </div>
     <div class="tb-group menu-wrap">
+      <button type="button" class="btn" id="importBtn" title="Open a mission file or a backup">Import</button>
       <button type="button" class="btn primary" id="exportBtn" aria-haspopup="true">Export</button>
       <div class="menu" id="exportMenu" hidden>
         <button type="button" data-act="sheet-png">Mission sheet (PNG)</button>
@@ -52,8 +53,8 @@
         <button type="button" data-act="map-png">Map only (PNG)</button>
         <hr>
         <button type="button" data-act="share">Copy share link</button>
-        <button type="button" data-act="json">Save mission file (.json)</button>
-        <button type="button" data-act="import">Open mission file...</button>
+        <button type="button" data-act="json">This mission as a file (.json)</button>
+        <button type="button" data-act="backup">Back up all missions (.json)</button>
       </div>
     </div>
   </div>
@@ -145,7 +146,7 @@
       <li>Choose a role (Patrol, Convoy, Guard, Assault or Scout) for each Axis vehicle. The border colour and the key label follow the mission book.</li>
       <li>Draw routes square by square, then tap Finish.</li>
       <li>Fill in the Mission tab. The mission sheet builds its key from the pieces on the map.</li>
-      <li>Your missions save in this browser. Use Export to keep a mission file, share a link, or print.</li>
+      <li>Your missions save in this browser. Export one mission or a backup of all of them, and use Import to bring them back or onto another device. Export also makes share links, PNG images and prints.</li>
     </ul>
     <h2>Credits</h2>
     <p>SAS: Rogue Regiment, its art, tiles and tokens are the property of Robert Butler and Word Forge Games, used with permission. The piece art comes from the community map editor toolkits: the TileSystem SAS map editor set by Magnus G (MagWiz), and the SAS Map Editor by Paul Manley (Triskelion Games) with additions by Paolo Roscio. Robert Butler supplied the original assets for both.</p>
@@ -158,13 +159,13 @@
 
 <dialog id="missionsDlg" class="dlg">
   <div class="dlg-head"><h2>My missions</h2><button type="button" class="icon-btn" data-close-dlg aria-label="Close">&times;</button></div>
-  <p class="muted">Saved in this browser only. Save a mission file to keep a copy or move it to another device.</p>
+  <p class="muted">Saved in this browser only. Back up all missions to keep a copy or move them to another device, then use Import there.</p>
   <ul id="missionsList" class="mlist"></ul>
-  <div class="dlg-foot"><button type="button" class="btn" id="importBtn2">Open mission file...</button></div>
+  <div class="dlg-foot"><button type="button" class="btn" id="backupBtn2">Back up all</button><button type="button" class="btn" id="importBtn2">Import...</button></div>
 </dialog>
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div id="printArea" aria-hidden="true"></div>
-<script type="module" src="js/app.js?v=2a0407ed"></script>
+<script type="module" src="js/app.js?v=8558a541"></script>
 </body>
 </html>

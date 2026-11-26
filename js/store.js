@@ -57,6 +57,26 @@ export function exportJSON(m) {
   downloadBlob(new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' }), slug(m.title) + '.sasmission.json');
 }
 
+export async function exportAll() {
+  const missions = await listMissions();
+  const out = { format: 'sas-rogue-regiment-backup', version: 1, exported: new Date().toISOString(), missions };
+  const d = new Date().toISOString().slice(0, 10);
+  downloadBlob(new Blob([JSON.stringify(out)], { type: 'application/json' }), `sas-missions-backup-${d}.json`);
+  return missions.length;
+}
+
+// Returns a list of missions from a single mission file or a backup file.
+export function parseImport(text) {
+  let data;
+  try { data = JSON.parse(text); } catch { throw new Error('This file is not a SAS mission or backup.'); }
+  if (data && data.format === 'sas-rogue-regiment-backup' && Array.isArray(data.missions)) {
+    const ok = data.missions.filter(m => m && m.board && Array.isArray(m.board.tiles));
+    if (!ok.length) throw new Error('The backup has no missions in it.');
+    return { backup: true, missions: ok };
+  }
+  return { backup: false, missions: [parseJSON(text)] };
+}
+
 export function parseJSON(text) {
   const data = JSON.parse(text);
   const m = data && data.format === 'sas-rogue-regiment-mission' ? data.mission : data;
