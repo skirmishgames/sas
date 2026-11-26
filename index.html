@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#231f20">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=9962243d">
+<link rel="stylesheet" href="css/styles.css?v=7636f900">
 <script>try{const t=localStorage.getItem('sas-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
@@ -20,6 +20,7 @@
   <nav class="tabs" aria-label="Sections">
     <a href="#designer" data-view="designer">Designer</a>
     <a href="#missions" data-view="missions">Missions</a>
+    <a href="#faq" data-view="faq">FAQ</a>
     <a href="#about" data-view="about">About</a>
   </nav>
   <button class="icon-btn theme-btn" id="themeBtn" type="button" title="Switch light or dark" aria-label="Switch light or dark mode">
@@ -168,6 +169,23 @@
   </div>
 </section>
 
+<!-- FAQ AND ERRATA -->
+<section id="view-faq" class="view faq" hidden>
+  <div class="mwrap">
+    <div class="mhead">
+      <h1>Errata &amp; FAQ</h1>
+      <p class="muted">Official answers and corrections from the <span id="faqSource"></span>. Tap a question to read the answer.</p>
+    </div>
+    <div class="mfilters ffilters">
+      <input type="search" id="faqSearch" placeholder="Search questions and answers, e.g. sprint, Nancy, mortar" aria-label="Search the FAQ">
+      <button type="button" class="btn small" id="faqExpand">Expand all</button>
+      <div class="chips" id="faqChips" role="group" aria-label="Sections"></div>
+    </div>
+    <p class="mcount" id="faqCount" aria-live="polite"></p>
+    <div id="faqBody"></div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="view-about" class="view about" hidden>
   <article class="prose">
@@ -175,6 +193,8 @@
     <p>A fan-made mission designer for <b>SAS: Rogue Regiment</b>, the solo and co-operative WW2 stealth game designed by Robert Butler and published by Word Forge Games. Build a map from the game's double-sided tiles, place Operators, Axis units, vehicles and objectives, draw patrol and convoy routes, and print a mission sheet laid out like the ones in the mission book.</p>
     <h2>Mission index</h2>
     <p>The Missions page lists every mission in the SAS mission book (core, They Who Dare, Heavy Metal, Hot Dogs, Jäger, Kickstarter and Black Box) and SAS Declassified. Search by name, unit or objective, and filter by series, type, event deck, Operators, map size or feature. Tick "Only what I own" to hide missions that need expansions you don't have. Summaries are short and spoiler-light; the full briefing is in your book. "Use as a template" starts a new design with that mission's setup.</p>
+    <h2>Errata and FAQ</h2>
+    <p>The FAQ page carries the official FAQ and errata sheet, searchable and linkable. The two mission errata (Wunderwaffe and Hellraisers) are already applied in the mission index.</p>
     <h2>How to use the designer</h2>
     <ul>
       <li>Pick a map tile under Pieces and tap a dashed slot. Select a tile, then drag it to move it. Use Flip for the other side and Rotate to turn it.</li>
@@ -206,6 +226,6 @@
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div id="printArea" aria-hidden="true"></div>
-<script type="module" src="js/app.js?v=9962243d"></script>
+<script type="module" src="js/app.js?v=7636f900"></script>
 </body>
 </html>

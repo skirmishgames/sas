@@ -46,7 +46,8 @@ export const MISSIONS = [
   ],
   "tags": [],
   "order": 0,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p3",
@@ -89,7 +90,8 @@ export const MISSIONS = [
   ],
   "tags": [],
   "order": 1,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p4",
@@ -143,7 +145,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 2,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p5",
@@ -193,7 +196,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 3,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p6",
@@ -248,7 +252,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 4,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p7",
@@ -296,7 +301,8 @@ export const MISSIONS = [
    "Event window"
   ],
   "order": 5,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p8",
@@ -351,7 +357,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 6,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p9",
@@ -403,7 +410,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 7,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p10",
@@ -464,7 +472,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 8,
-  "seriesSlug": "core"
+  "seriesSlug": "core",
+  "errata": []
  },
  {
   "id": "mb-p11",
@@ -513,7 +522,8 @@ export const MISSIONS = [
    "Axis Officer"
   ],
   "order": 9,
-  "seriesSlug": "they-who-dare"
+  "seriesSlug": "they-who-dare",
+  "errata": []
  },
  {
   "id": "mb-p12",
@@ -570,7 +580,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 10,
-  "seriesSlug": "they-who-dare"
+  "seriesSlug": "they-who-dare",
+  "errata": []
  },
  {
   "id": "mb-p13",
@@ -638,7 +649,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 11,
-  "seriesSlug": "they-who-dare"
+  "seriesSlug": "they-who-dare",
+  "errata": []
  },
  {
   "id": "mb-p14",
@@ -673,7 +685,7 @@ export const MISSIONS = [
    "Axis Motorbike Patrol",
    "Axis Half Track Patrol",
    "Axis Panzer III Guard",
-   "Axis Panzer II Assault",
+   "Axis Panzer III Assault",
    "Axis AA Gun",
    "Fuel Barrel",
    "White Spawn Tile",
@@ -708,7 +720,10 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 12,
-  "seriesSlug": "they-who-dare"
+  "seriesSlug": "they-who-dare",
+  "errata": [
+   "m-wunderwaffe"
+  ]
  },
  {
   "id": "mb-p15",
@@ -775,7 +790,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 13,
-  "seriesSlug": "they-who-dare"
+  "seriesSlug": "they-who-dare",
+  "errata": []
  },
  {
   "id": "mb-p16",
@@ -835,7 +851,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 14,
-  "seriesSlug": "heavy-metal"
+  "seriesSlug": "heavy-metal",
+  "errata": []
  },
  {
   "id": "mb-p17",
@@ -894,7 +911,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 15,
-  "seriesSlug": "hot-dogs"
+  "seriesSlug": "hot-dogs",
+  "errata": []
  },
  {
   "id": "mb-p18",
@@ -954,7 +972,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 16,
-  "seriesSlug": "jager"
+  "seriesSlug": "jager",
+  "errata": []
  },
  {
   "id": "mb-p19",
@@ -983,7 +1002,7 @@ export const MISSIONS = [
   "key": [
    "Operator Start",
    "Axis Guard",
-   "Axis Motorbike Convoy",
+   "Axis Motorbike Patrol",
    "Fuel Barrel",
    "White Spawn Tile",
    "Black Spawn Tile",
@@ -1004,11 +1023,14 @@ export const MISSIONS = [
   ],
   "tags": [
    "Axis Officer",
-   "Convoy",
-   "Supply dumps"
+   "Supply dumps",
+   "Vehicle patrols"
   ],
   "order": 17,
-  "seriesSlug": "kickstarter"
+  "seriesSlug": "kickstarter",
+  "errata": [
+   "m-hellraisers"
+  ]
  },
  {
   "id": "mb-p20",
@@ -1065,7 +1087,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 18,
-  "seriesSlug": "kickstarter"
+  "seriesSlug": "kickstarter",
+  "errata": []
  },
  {
   "id": "mb-p21",
@@ -1115,7 +1138,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 19,
-  "seriesSlug": "kickstarter"
+  "seriesSlug": "kickstarter",
+  "errata": []
  },
  {
   "id": "mb-p22",
@@ -1173,7 +1197,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 20,
-  "seriesSlug": "kickstarter"
+  "seriesSlug": "kickstarter",
+  "errata": []
  },
  {
   "id": "mb-p23",
@@ -1229,7 +1254,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 21,
-  "seriesSlug": "kickstarter"
+  "seriesSlug": "kickstarter",
+  "errata": []
  },
  {
   "id": "mb-p24",
@@ -1286,7 +1312,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 22,
-  "seriesSlug": "kickstarter"
+  "seriesSlug": "kickstarter",
+  "errata": []
  },
  {
   "id": "mb-p25",
@@ -1341,7 +1368,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 23,
-  "seriesSlug": "black-box"
+  "seriesSlug": "black-box",
+  "errata": []
  },
  {
   "id": "mb-p26",
@@ -1396,7 +1424,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 24,
-  "seriesSlug": "black-box"
+  "seriesSlug": "black-box",
+  "errata": []
  },
  {
   "id": "mb-p27",
@@ -1456,7 +1485,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 25,
-  "seriesSlug": "black-box"
+  "seriesSlug": "black-box",
+  "errata": []
  },
  {
   "id": "mb-p28",
@@ -1529,7 +1559,8 @@ export const MISSIONS = [
    "Willys Jeep"
   ],
   "order": 26,
-  "seriesSlug": "black-box"
+  "seriesSlug": "black-box",
+  "errata": []
  },
  {
   "id": "decl-p2",
@@ -1579,7 +1610,8 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 27,
-  "seriesSlug": "heavy-metal"
+  "seriesSlug": "heavy-metal",
+  "errata": []
  },
  {
   "id": "decl-p3",
@@ -1633,6 +1665,7 @@ export const MISSIONS = [
    "Vehicle patrols"
   ],
   "order": 28,
-  "seriesSlug": "heavy-metal"
+  "seriesSlug": "heavy-metal",
+  "errata": []
  }
 ];

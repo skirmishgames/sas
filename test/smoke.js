@@ -157,6 +157,26 @@ async function run(viewport, label) {
   await page.click('#mClear');
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-missions.png` });
 
+  // FAQ and errata
+  await page.click('.tabs a[data-view="faq"]');
+  await page.waitForTimeout(300);
+  const qs = await page.$$eval('.fitem', c => c.length);
+  assert(qs >= 35, `${label}: FAQ lists ${qs} questions`);
+  await page.fill('#faqSearch', 'mortar');
+  await page.waitForTimeout(150);
+  assert((await page.$$eval('.fitem', c => c.length)) === 2, `${label}: FAQ search`);
+  await page.fill('#faqSearch', '');
+  await page.click('#faqChips [data-sec="errata"]');
+  assert((await page.$$eval('.ecard', c => c.length)) === 6, `${label}: errata section`);
+  await page.click('.ecard [data-mission="mb-p19"]');
+  await page.waitForTimeout(400);
+  assert(await page.isVisible('#missionDlg .merrata'), `${label}: errata links to mission`);
+  await page.click('#missionDlg [data-close-dlg]');
+  await page.goto(BASE + '#faq&q=speargun');
+  await page.waitForTimeout(600);
+  assert(await page.$eval('#q-speargun', d => d.open), `${label}: FAQ deep link opens answer`);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-faq.png` });
+
   // about page
   await page.click('.tabs a[data-view="about"]');
   await page.waitForTimeout(300);

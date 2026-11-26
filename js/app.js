@@ -1,8 +1,9 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=9962243d';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=9962243d';
-import { renderSheet, fontsReady } from './sheet.js?v=9962243d';
-import { initMissions } from './missions.js?v=9962243d';
-import * as store from './store.js?v=9962243d';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=7636f900';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=7636f900';
+import { renderSheet, fontsReady } from './sheet.js?v=7636f900';
+import { initMissions, detail as missionDetail } from './missions.js?v=7636f900';
+import { initFaq, focusFaq } from './faq.js?v=7636f900';
+import * as store from './store.js?v=7636f900';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -416,10 +417,12 @@ $('#board').addEventListener('pointerup', () => setTimeout(updateBrushBar, 0));
 function route() {
   const h = location.hash.replace(/^#/, '');
   const view = h.split('&')[0] || 'designer';
-  const v = ['designer', 'missions', 'about'].includes(view) ? view : 'designer';
+  const v = ['designer', 'missions', 'faq', 'about'].includes(view) ? view : 'designer';
   $$('.view').forEach(s => { s.hidden = s.id !== 'view-' + v; });
   $$('.tabs a').forEach(a => { if (a.dataset.view === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   if (v === 'designer') editor.resize();
+  if (v === 'faq') { const fq = (h.match(/&q=([\w-]+)/) || [])[1]; if (fq) setTimeout(() => focusFaq(fq), 50); }
+  if (v !== 'missions' && $('#missionDlg').open) $('#missionDlg').close();
 }
 window.addEventListener('hashchange', route);
 $('#themeBtn').addEventListener('click', () => {
@@ -444,6 +447,7 @@ async function useTemplate(src) {
 async function start() {
   buildPalette();
   initMissions({ template: useTemplate });
+  initFaq({ showMission: id => { location.hash = '#missions'; setTimeout(() => missionDetail(id), 60); } });
   route();
   const share = (location.hash.match(/[&#]m=([A-Za-z0-9_-]+)/) || [])[1];
   if (share) {

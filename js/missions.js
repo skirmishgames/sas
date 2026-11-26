@@ -1,5 +1,6 @@
 // Mission index: search, filters and detail view.
-import { MISSIONS, SERIES, EXPANSIONS } from './data/missions.js?v=9962243d';
+import { MISSIONS, SERIES, EXPANSIONS } from './data/missions.js?v=7636f900';
+import { ERRATA } from './data/faq.js?v=7636f900';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -82,7 +83,7 @@ function options(sel, values, all, names = {}) {
   $(sel).innerHTML = `<option value="">${all}</option>` + values.map(v => `<option value="${esc(v)}">${esc(names[v] || v)}</option>`).join('');
 }
 
-function detail(id) {
+export function detail(id) {
   const m = MISSIONS.find(x => x.id === id); if (!m) return;
   const d = $('#missionDlg');
   d.querySelector('.dlg-head h2').textContent = m.title;
@@ -104,6 +105,7 @@ function detail(id) {
       ${m.key.length ? `<h4>On the map</h4><p class="mtags">${m.key.map(k => `<span>${esc(k)}</span>`).join('')}</p>` : ''}
       ${m.objectives.length ? `<h4>Objectives</h4><p class="mtags obj">${m.objectives.map(k => `<span>${esc(k)}</span>`).join('')}</p>` : ''}
       ${m.special.length ? `<h4>Special rules</h4><ul class="mspecial">${m.special.map(k => `<li>${esc(k)}</li>`).join('')}</ul>` : ''}
+      ${m.errata.length ? `<p class="merrata"><b>Errata applied:</b> ${m.errata.map(e => esc((ERRATA.find(x => x.id === e) || {}).text || '')).join(' ')} <a href="#faq&q=${m.errata[0]}">See errata</a></p>` : ''}
       <p class="note">Full briefing and setup are on the mission page in your copy of the ${esc(m.source)}.</p>
       <div class="mdet-actions"><button type="button" class="btn primary" data-template="${m.id}">Use as a template</button></div>
     </div>`;
