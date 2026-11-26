@@ -1,6 +1,6 @@
 // Mission index: search, filters and detail view.
-import { MISSIONS, SERIES, EXPANSIONS } from './data/missions.js?v=7636f900';
-import { ERRATA } from './data/faq.js?v=7636f900';
+import { MISSIONS, SERIES, EXPANSIONS } from './data/missions.js?v=8c0cdd94';
+import { ERRATA } from './data/faq.js?v=8c0cdd94';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -121,7 +121,8 @@ export function initMissions({ template }) {
   options('#fSeries', SERIES.filter(s => MISSIONS.some(m => m.series === s)), 'All series');
   options('#fType', uniq(MISSIONS.map(m => m.type)).sort(), 'All types');
   options('#fDeck', uniq(MISSIONS.map(m => m.deck).filter(Boolean)).sort(), 'All event decks');
-  options('#fOps', uniq(MISSIONS.map(m => String(m.operatorCount))).sort(), 'Any Operators', { 1: '1 Operator', 2: '2 Operators', 3: '3 Operators', 4: '4 Operators' });
+  const opCounts = uniq(MISSIONS.map(m => m.operatorCount)).sort((a, b) => a - b).map(String);
+  options('#fOps', opCounts, 'Any Operators', Object.fromEntries(opCounts.map(n => [n, `${n} Operator${n === '1' ? '' : 's'}`])));
   options('#fSize', ['small', 'medium', 'large'], 'Any map size', SIZE_NAMES);
   const tags = uniq(MISSIONS.flatMap(m => m.tags)).sort();
   options('#fTag', tags, 'Any feature');

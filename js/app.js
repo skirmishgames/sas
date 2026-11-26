@@ -1,9 +1,9 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=7636f900';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=7636f900';
-import { renderSheet, fontsReady } from './sheet.js?v=7636f900';
-import { initMissions, detail as missionDetail } from './missions.js?v=7636f900';
-import { initFaq, focusFaq } from './faq.js?v=7636f900';
-import * as store from './store.js?v=7636f900';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=8c0cdd94';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=8c0cdd94';
+import { renderSheet, fontsReady } from './sheet.js?v=8c0cdd94';
+import { initMissions, detail as missionDetail } from './missions.js?v=8c0cdd94';
+import { initFaq, focusFaq } from './faq.js?v=8c0cdd94';
+import * as store from './store.js?v=8c0cdd94';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];

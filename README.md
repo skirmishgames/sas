@@ -4,6 +4,8 @@ A fan-made mission designer for SAS: Rogue Regiment, the solo and co-operative W
 
 Live at https://sas.skirmishgames.app
 
+Get the game: https://www.wordforgegames.com/sas-rogue-regiment
+
 ## What it does
 
 - Build a map from the game's double-sided tiles (1A to 12B, plus the bunker). The tool stops you using both sides of the same tile.
