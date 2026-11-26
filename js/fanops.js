@@ -1,5 +1,5 @@
 // Fan Ops page: fan-made missions with playtest status and feedback by email.
-import { FANOPS, STATUS, PLAYTESTS_NEEDED } from './data/fanops.js?v=d2fa9c1b';
+import { FANOPS, STATUS, PLAYTESTS_NEEDED } from './data/fanops.js?v=515fc801';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -42,7 +42,7 @@ function card(m) {
       ${m.changes.length ? `<details class="focus"><summary>Changes (${m.changes.length})</summary><ul>${m.changes.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>` : ''}
       <div class="opactions">
         <button type="button" class="btn small primary" data-act="open" data-id="${m.id}">Open in designer</button>
-        <button type="button" class="btn small" data-act="sheet" data-id="${m.id}">Mission sheet</button>
+        <button type="button" class="btn small" data-act="sheet" data-id="${m.id}">Mission sheet (PDF)</button>
         <a class="btn small" href="${feedbackHref(m)}">Send feedback</a>
         <button type="button" class="btn small" data-act="link" data-id="${m.id}">Copy link</button>
       </div>

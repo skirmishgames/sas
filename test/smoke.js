@@ -167,6 +167,10 @@ async function run(viewport, label) {
   await page.click('#opsStatus [data-st="playtested"]');
   assert((await page.$$eval('.opcard', c => c.length)) === 0, `${label}: status filter`);
   await page.click('#opsStatus [data-st=""]');
+  const [pdf] = await Promise.all([page.waitForEvent('download'), page.click('.opcard [data-act="sheet"]')]);
+  const pdfBytes = require('fs').readFileSync(await pdf.path());
+  assert(pdf.suggestedFilename().endsWith('.pdf') && pdfBytes.slice(0, 4).toString() === '%PDF', `${label}: mission sheet PDF downloads`);
+  if (SHOTS) require('fs').copyFileSync(await pdf.path(), `${SHOTS}/${label}-sheet.pdf`);
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-ops.png` });
   await page.click('.opcard [data-act="open"]');
   await page.waitForTimeout(700);

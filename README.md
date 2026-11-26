@@ -13,8 +13,8 @@ Get the game: https://www.wordforgegames.com/sas-rogue-regiment
 - Give each Axis vehicle a role: patrol, convoy, guard, assault or scout. The border colour and key label follow the mission book.
 - Draw patrol and convoy routes square by square.
 - Fill in the briefing, victory points, recommended setup and stealth tracker.
-- See and print a mission sheet laid out like the mission book, with the key built from the pieces on the map.
-- Missions save in the browser. Export a mission file, a share link, the sheet as PNG, or the map on its own.
+- Download a mission sheet PDF laid out like the mission book, with the key built from the pieces on the map.
+- Missions save in the browser. Export a mission file, a share link, the sheet as PDF, or the map on its own.
 
 The Missions page indexes every published mission with search and filters (series, type, event deck, Operators, map size, features, owned expansions).
 

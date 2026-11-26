@@ -1,5 +1,5 @@
 // Board model, renderer and canvas interaction for the mission designer.
-import { SQ, TILE, PIECE, ROLES } from './data/catalog.js?v=d2fa9c1b';
+import { SQ, TILE, PIECE, ROLES } from './data/catalog.js?v=515fc801';
 
 export const T = 10; // squares per map tile
 

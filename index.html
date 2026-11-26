@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#231f20">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=d2fa9c1b">
+<link rel="stylesheet" href="css/styles.css?v=515fc801">
 <script>try{const t=localStorage.getItem('sas-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
@@ -51,8 +51,7 @@
       <button type="button" class="btn" id="importBtn" title="Open a mission file or a backup">Import</button>
       <button type="button" class="btn primary" id="exportBtn" aria-haspopup="true">Export</button>
       <div class="menu" id="exportMenu" hidden>
-        <button type="button" data-act="sheet-png">Mission sheet (PNG)</button>
-        <button type="button" data-act="print">Print mission sheet</button>
+        <button type="button" data-act="sheet-pdf">Mission sheet (PDF)</button>
         <button type="button" data-act="map-png">Map only (PNG)</button>
         <hr>
         <button type="button" data-act="share">Copy share link</button>
@@ -209,11 +208,19 @@
 <section id="view-about" class="view about" hidden>
   <article class="prose">
     <h1>About</h1>
-    <p>A fan-made mission designer for <b>SAS: Rogue Regiment</b>, the solo and co-operative WW2 stealth game designed by Robert Butler and published by Word Forge Games. Build a map from the game's double-sided tiles, place Operators, Axis units, vehicles and objectives, draw patrol and convoy routes, and print a mission sheet laid out like the ones in the mission book.</p>
+    <p>A fan-made mission designer for <b>SAS: Rogue Regiment</b>, the solo and co-operative WW2 stealth game designed by Robert Butler and published by Word Forge Games. Build a map from the game's double-sided tiles, place Operators, Axis units, vehicles and objectives, draw patrol and convoy routes, and download a mission sheet PDF laid out like the ones in the mission book.</p>
     <h2>Mission index</h2>
     <p>The Missions page lists every mission in the SAS mission book (core, They Who Dare, Heavy Metal, Hot Dogs, Jäger, Kickstarter and Black Box) and SAS Declassified. Search by name, unit or objective, and filter by series, type, event deck, Operators, map size or feature. Tick "Only what I own" to hide missions that need expansions you don't have. Summaries are short and spoiler-light; the full briefing is in your book. "Use as a template" starts a new design with that mission's setup.</p>
     <h2>Fan Ops</h2>
     <p>New missions made for the community. Each one is marked Needs playtest until it has 3 playtest reports, and Send feedback opens a ready-made email with the questions for that mission.</p>
+    <h2>Submit your mission</h2>
+    <p>Designed a mission you're proud of? Send it in and it can join Fan Ops for others to play and playtest.</p>
+    <ul>
+      <li>In the designer, choose Export, then "This mission as a file (.json)".</li>
+      <li>Email the file to <a href="mailto:skirmishgames.app@gmail.com?subject=SAS%20Fan%20Ops%20submission">skirmishgames.app@gmail.com</a> with the subject "SAS Fan Ops submission".</li>
+      <li>Say how you'd like to be credited, which expansions it needs, and whether you've played it yet.</li>
+    </ul>
+    <p>New missions go up marked Needs playtest and are tuned from player feedback.</p>
     <h2>Errata and FAQ</h2>
     <p>The FAQ page carries the official FAQ and errata sheet, searchable and linkable. The two mission errata (Wunderwaffe and Hellraisers) are already applied in the mission index.</p>
     <h2>How to use the designer</h2>
@@ -223,7 +230,7 @@
       <li>Choose a role (Patrol, Convoy, Guard, Assault or Scout) for each Axis vehicle. The border colour and the key label follow the mission book.</li>
       <li>Draw routes square by square, then tap Finish.</li>
       <li>Fill in the Mission tab. The mission sheet builds its key from the pieces on the map.</li>
-      <li>Your missions save in this browser. Export one mission or a backup of all of them, and use Import to bring them back or onto another device. Export also makes share links, PNG images and prints.</li>
+      <li>Your missions save in this browser. Export one mission or a backup of all of them, and use Import to bring them back or onto another device. Export also makes share links, a printable mission sheet (PDF) and a map image.</li>
     </ul>
     <h2>Credits</h2>
     <p>SAS: Rogue Regiment, its art, tiles and tokens are the property of Robert Butler and Word Forge Games, used with permission. The piece art comes from the community map editor toolkits: the TileSystem SAS map editor set by Magnus G (MagWiz), and the SAS Map Editor by Paul Manley (Triskelion Games) with additions by Paolo Roscio. Robert Butler supplied the original assets for both.</p>
@@ -246,7 +253,7 @@
 </dialog>
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-<div id="printArea" aria-hidden="true"></div>
-<script type="module" src="js/app.js?v=d2fa9c1b"></script>
+<script src="vendor/jspdf.umd.min.js" defer></script>
+<script type="module" src="js/app.js?v=515fc801"></script>
 </body>
 </html>

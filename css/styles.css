@@ -319,11 +319,3 @@ mark { background: #f2ae1366; color: inherit; border-radius: 2px; }
   .seg button { padding: 5px 9px; font-size: 13px; }
 }
 
-/* printing: only the mission sheet */
-#printArea { display: none; }
-@media print {
-  @page { size: letter; margin: 0; }
-  body > *:not(#printArea) { display: none !important; }
-  #printArea { display: block; }
-  #printArea img { width: 100%; height: auto; display: block; page-break-inside: avoid; }
-}

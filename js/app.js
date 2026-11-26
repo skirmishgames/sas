@@ -1,10 +1,10 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=d2fa9c1b';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=d2fa9c1b';
-import { renderSheet, fontsReady } from './sheet.js?v=d2fa9c1b';
-import { initMissions, detail as missionDetail } from './missions.js?v=d2fa9c1b';
-import { initFaq, focusFaq } from './faq.js?v=d2fa9c1b';
-import { initFanOps, focusOp } from './fanops.js?v=d2fa9c1b';
-import * as store from './store.js?v=d2fa9c1b';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=515fc801';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=515fc801';
+import { renderSheet, fontsReady, sheetPdf } from './sheet.js?v=515fc801';
+import { initMissions, detail as missionDetail } from './missions.js?v=515fc801';
+import { initFaq, focusFaq } from './faq.js?v=515fc801';
+import { initFanOps, focusOp } from './fanops.js?v=515fc801';
+import * as store from './store.js?v=515fc801';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -300,7 +300,7 @@ function queueSheet(delay = 400) {
     $('#sheetStatus').textContent = 'Drawing sheet';
     const cv = await renderSheet(m);
     $('#sheetImg').src = cv.toDataURL('image/png');
-    $('#sheetStatus').textContent = 'Preview. Use Export to download or print.';
+    $('#sheetStatus').textContent = 'Preview. Use Export, Mission sheet (PDF) to download and print at 100%.';
   }, delay);
 }
 
@@ -315,15 +315,9 @@ $('#exportMenu').addEventListener('click', async e => {
     if (!m.board.tiles.length && !m.board.pieces.length) return toast('The map is empty.');
     await preload(m.board.pieces.map(pieceSrc).filter(Boolean));
     boardCanvas(m.board, 48, 0.25).toBlob(b => store.downloadBlob(b, name + '-map.png'));
-  } else if (a.dataset.act === 'sheet-png') {
-    toast('Drawing mission sheet...');
-    (await renderSheet(m)).toBlob(b => store.downloadBlob(b, name + '-sheet.png'));
-  } else if (a.dataset.act === 'print') {
-    const cv = await renderSheet(m);
-    $('#printArea').innerHTML = `<img src="${cv.toDataURL('image/png')}" alt="">`;
-    const im = $('#printArea img');
-    await (im.decode ? im.decode().catch(() => {}) : Promise.resolve());
-    window.print();
+  } else if (a.dataset.act === 'sheet-pdf') {
+    toast('Building mission sheet PDF...');
+    try { await sheetPdf(m, name + '-sheet.pdf'); } catch (err) { toast(err.message); }
   } else if (a.dataset.act === 'json') store.exportJSON(m);
   else if (a.dataset.act === 'backup') backupAll();
   else if (a.dataset.act === 'share') {
@@ -452,7 +446,7 @@ async function start() {
   initFanOps({
     parse: store.parseJSON, toast,
     open: async mm => { if (dirty) await save(); loadMission(mm, { keepId: false }); await save(); location.hash = '#designer'; toast(`${mm.title} opened as a new mission in the designer. Your copy is saved under My missions.`, 5000); },
-    sheet: async mm => { toast('Drawing mission sheet...'); (await renderSheet(mm)).toBlob(b => store.downloadBlob(b, store.slug(mm.title) + '-sheet.png')); },
+    sheet: async mm => { toast('Building mission sheet PDF...'); await sheetPdf(mm, store.slug(mm.title) + '-sheet.pdf'); },
   });
   initFaq({ showMission: id => { location.hash = '#missions'; setTimeout(() => missionDetail(id), 60); } });
   route();
