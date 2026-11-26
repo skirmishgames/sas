@@ -194,6 +194,25 @@ async function run(viewport, label) {
   assert(mail.startsWith('mailto:skirmishgames.app@gmail.com') && mail.includes('Credit me as: Tester') && mail.includes('attach'), `${label}: submission email template`);
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-submit.png`, fullPage: true });
 
+  // PDF map images load on a fresh page (no tiles cached by the designer)
+  {
+    const fresh = await ctx.newPage();
+    // Slow tile images down like a real connection, so an image that is not awaited shows up as a blank tile
+    await fresh.route('**/assets/tiles/**', async r => { await new Promise(res => setTimeout(res, 1000)); await r.continue(); });
+    await fresh.goto(BASE + '#ops');
+    await fresh.waitForTimeout(500);
+    const blanks = await fresh.evaluate(async () => {
+      const st = await import('./js/store.js'); const sh = await import('./js/sheet.js');
+      const m = st.parseJSON(await (await fetch('ops/bird-in-the-hand.sasmission.json')).text());
+      const pages = await sh.renderPages(m);
+      const c = pages[0].cv, d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+      let n = 0; for (let i = 0; i < d.length; i += 4) if (d[i] === 93 && d[i + 1] === 107 && d[i + 2] === 58) n++;
+      return n;
+    });
+    assert(blanks < 50, `${label}: all map tiles drawn in the sheet on a fresh page (${blanks} blank pixels)`);
+    await fresh.close();
+  }
+
   // FAQ and errata
   await page.click('.tabs a[data-view="faq"]');
   await page.waitForTimeout(300);

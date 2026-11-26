@@ -1,7 +1,7 @@
 // Draws a mission sheet in the style of the SAS: Rogue Regiment mission book.
 // Letter page at 150 dpi: 1275 x 1650 px. The page grows taller if the text needs it.
-import { PIECE } from './data/catalog.js?v=688f7e9d';
-import { boardCanvas, keyLabel, isObjective, drawPiece, pieceSize, img, pieceSrc, preload } from './board.js?v=688f7e9d';
+import { PIECE } from './data/catalog.js?v=3ce8ebc5';
+import { boardCanvas, keyLabel, isObjective, drawPiece, pieceSize, img, pieceSrc, preload, loadBoard } from './board.js?v=3ce8ebc5';
 
 export const C = {
   crimson: '#b00c36', charcoal: '#231f20', olive: '#2f3623', khaki: '#c9c39f',
@@ -231,7 +231,7 @@ function drawMap(ctx, map, y, maxH) {
 // Returns an array of page canvases (one or two).
 export async function renderPages(m) {
   await fontsReady();
-  await preload(m.board.pieces.map(pieceSrc).filter(Boolean));
+  await loadBoard(m.board);
   const empty = !m.board.tiles.length && !m.board.pieces.length;
   const map = empty ? null : boardCanvas(m.board, 60, 0.15);
   const scratch = document.createElement('canvas').getContext('2d');

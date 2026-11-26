@@ -1,11 +1,11 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=688f7e9d';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=688f7e9d';
-import { renderSheet, fontsReady, sheetPdf } from './sheet.js?v=688f7e9d';
-import { initMissions, detail as missionDetail } from './missions.js?v=688f7e9d';
-import { initFaq, focusFaq } from './faq.js?v=688f7e9d';
-import { initFanOps, focusOp } from './fanops.js?v=688f7e9d';
-import { initSubmit, showSubmit } from './submit.js?v=688f7e9d';
-import * as store from './store.js?v=688f7e9d';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=3ce8ebc5';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece, loadBoard } from './board.js?v=3ce8ebc5';
+import { renderSheet, fontsReady, sheetPdf } from './sheet.js?v=3ce8ebc5';
+import { initMissions, detail as missionDetail } from './missions.js?v=3ce8ebc5';
+import { initFaq, focusFaq } from './faq.js?v=3ce8ebc5';
+import { initFanOps, focusOp } from './fanops.js?v=3ce8ebc5';
+import { initSubmit, showSubmit } from './submit.js?v=3ce8ebc5';
+import * as store from './store.js?v=3ce8ebc5';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -314,7 +314,7 @@ $('#exportMenu').addEventListener('click', async e => {
   const name = store.slug(m.title);
   if (a.dataset.act === 'map-png') {
     if (!m.board.tiles.length && !m.board.pieces.length) return toast('The map is empty.');
-    await preload(m.board.pieces.map(pieceSrc).filter(Boolean));
+    try { await loadBoard(m.board); } catch (err) { return toast(err.message); }
     boardCanvas(m.board, 48, 0.25).toBlob(b => store.downloadBlob(b, name + '-map.png'));
   } else if (a.dataset.act === 'sheet-pdf') {
     toast('Building mission sheet PDF...');

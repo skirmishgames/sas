@@ -1,5 +1,5 @@
 // Board model, renderer and canvas interaction for the mission designer.
-import { SQ, TILE, PIECE, ROLES } from './data/catalog.js?v=688f7e9d';
+import { SQ, TILE, PIECE, ROLES } from './data/catalog.js?v=3ce8ebc5';
 
 export const T = 10; // squares per map tile
 
@@ -19,10 +19,25 @@ export function img(src) {
   return im;
 }
 export function preload(srcs) {
-  return Promise.all(srcs.map(s => new Promise(res => {
-    const im = img(s);
-    if (im.complete && im.naturalWidth) res(); else { im.addEventListener('load', res, { once: true }); im.addEventListener('error', res, { once: true }); }
+  return Promise.all([...new Set(srcs)].map(src => new Promise(res => {
+    const im = img(src);
+    const done = () => (im.decode ? im.decode().catch(() => {}) : Promise.resolve()).then(res);
+    if (im.complete && im.naturalWidth) done();
+    else { im.addEventListener('load', done, { once: true }); im.addEventListener('error', () => res(), { once: true }); }
   })));
+}
+
+// Every image a board needs: map tiles and pieces.
+export function boardSrcs(board) {
+  return [...board.tiles.map(t => TILE[t.t] && TILE[t.t].src), ...board.pieces.map(pieceSrc)].filter(Boolean);
+}
+
+// Load every image for a board before drawing it off screen. Throws if any image is missing.
+export async function loadBoard(board) {
+  const srcs = boardSrcs(board);
+  await preload(srcs);
+  const missing = srcs.filter(s => { const im = img(s); return !(im.complete && im.naturalWidth); });
+  if (missing.length) throw new Error(`Could not load ${missing.length} map image${missing.length > 1 ? 's' : ''}. Check your connection and try again.`);
 }
 
 // ---------- model helpers ----------

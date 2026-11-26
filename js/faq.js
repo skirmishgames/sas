@@ -1,5 +1,5 @@
 // FAQ and errata page: search, section filter, deep links.
-import { FAQ, ERRATA, FAQ_SOURCE } from './data/faq.js?v=688f7e9d';
+import { FAQ, ERRATA, FAQ_SOURCE } from './data/faq.js?v=3ce8ebc5';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
