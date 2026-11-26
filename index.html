@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#231f20">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/russo-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=8c0cdd94">
+<link rel="stylesheet" href="css/styles.css?v=d2fa9c1b">
 <script>try{const t=localStorage.getItem('sas-theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
@@ -18,8 +18,9 @@
     <span class="brand-text"><b>Rogue Regiment</b><small>Fan tools</small></span>
   </a>
   <nav class="tabs" aria-label="Sections">
-    <a href="#designer" data-view="designer">Designer</a>
+    <a href="#designer" data-view="designer"><span class="lg">Designer</span><span class="sm">Design</span></a>
     <a href="#missions" data-view="missions">Missions</a>
+    <a href="#ops" data-view="ops">Fan Ops</a>
     <a href="#faq" data-view="faq">FAQ</a>
     <a href="#about" data-view="about">About</a>
   </nav>
@@ -169,6 +170,24 @@
   </div>
 </section>
 
+<!-- FAN OPS -->
+<section id="view-ops" class="view ops" hidden>
+  <div class="mwrap">
+    <div class="mhead">
+      <h1>Fan Ops</h1>
+      <p>New missions made by the community, free to play and print. Open one in the designer to see the full map and print its mission sheet. A mission shows <b>Needs playtest</b> until it has been played and reported 3 times, then it is marked <b>Playtested</b>. Played one? Use <b>Send feedback</b>: it opens an email with the questions already filled in.</p>
+      <p class="muted">Made your own mission? Export it from the designer as a file and email it to <a href="mailto:skirmishgames.app@gmail.com?subject=SAS%20Fan%20Ops%20submission">skirmishgames.app@gmail.com</a> with a line about it. Missions that use expansions are welcome; say which ones.</p>
+    </div>
+    <div class="mfilters">
+      <input type="search" id="opsSearch" placeholder="Search fan missions" aria-label="Search fan missions">
+      <select id="opsType" aria-label="Mission type"></select>
+      <div class="chips" id="opsStatus" role="group" aria-label="Playtest status"></div>
+    </div>
+    <p class="mcount" id="opsCount" aria-live="polite"></p>
+    <div class="mgrid" id="opsGrid"></div>
+  </div>
+</section>
+
 <!-- FAQ AND ERRATA -->
 <section id="view-faq" class="view faq" hidden>
   <div class="mwrap">
@@ -193,6 +212,8 @@
     <p>A fan-made mission designer for <b>SAS: Rogue Regiment</b>, the solo and co-operative WW2 stealth game designed by Robert Butler and published by Word Forge Games. Build a map from the game's double-sided tiles, place Operators, Axis units, vehicles and objectives, draw patrol and convoy routes, and print a mission sheet laid out like the ones in the mission book.</p>
     <h2>Mission index</h2>
     <p>The Missions page lists every mission in the SAS mission book (core, They Who Dare, Heavy Metal, Hot Dogs, Jäger, Kickstarter and Black Box) and SAS Declassified. Search by name, unit or objective, and filter by series, type, event deck, Operators, map size or feature. Tick "Only what I own" to hide missions that need expansions you don't have. Summaries are short and spoiler-light; the full briefing is in your book. "Use as a template" starts a new design with that mission's setup.</p>
+    <h2>Fan Ops</h2>
+    <p>New missions made for the community. Each one is marked Needs playtest until it has 3 playtest reports, and Send feedback opens a ready-made email with the questions for that mission.</p>
     <h2>Errata and FAQ</h2>
     <p>The FAQ page carries the official FAQ and errata sheet, searchable and linkable. The two mission errata (Wunderwaffe and Hellraisers) are already applied in the mission index.</p>
     <h2>How to use the designer</h2>
@@ -226,6 +247,6 @@
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div id="printArea" aria-hidden="true"></div>
-<script type="module" src="js/app.js?v=8c0cdd94"></script>
+<script type="module" src="js/app.js?v=d2fa9c1b"></script>
 </body>
 </html>

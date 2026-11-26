@@ -1,6 +1,6 @@
 // Mission index: search, filters and detail view.
-import { MISSIONS, SERIES, EXPANSIONS } from './data/missions.js?v=8c0cdd94';
-import { ERRATA } from './data/faq.js?v=8c0cdd94';
+import { MISSIONS, SERIES, EXPANSIONS } from './data/missions.js?v=d2fa9c1b';
+import { ERRATA } from './data/faq.js?v=d2fa9c1b';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

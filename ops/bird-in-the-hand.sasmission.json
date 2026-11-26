@@ -1,0 +1,47 @@
+{
+ "format": "sas-rogue-regiment-mission",
+ "version": 1,
+ "mission": {
+  "title": "Bird in the Hand",
+  "number": "",
+  "type": "Rescue",
+  "author": "Ivan",
+  "quote": "A Lancaster came down north of the river last night. Its navigator got out, and a farmer has him hidden in his barn. The military police are searching the village house by house and they'll reach that barn by noon. Navigators are worth their weight in gold, chaps. Bring him home.",
+  "speaker": "Jock",
+  "briefing": "Operators begin at their entry/exit tile. The **RAF navigator** (a Resistance unit) is hiding in the barn. He does nothing until an Operator moves to an adjacent square within his LOS, at which point he is activated. Once active he is a support unit using the Resistance support card, but he is unarmed and cannot attack.\n\nWhen the special event card is drawn, place the Axis Truck convoy at the east end of the village road. It follows the convoy route and stops on the road outside the barn. If the navigator has not been activated by then, he is captured and the mission is failed. Otherwise the truck carries on along its route in the next Axis Advance Phase.\n\nThe navigator escapes by reaching the entry/exit tile, or aboard the Rowing Boat, which may leave the board from any river square on the west edge. Anyone aboard when it leaves has escaped.\n\n4 victory points for the navigator escaping, 2 for killing the Axis Officer at the crossroads, and 1 for each Operator escaping. The mission is failed if the navigator is killed or captured, or if Operators score less than 7 victory points.",
+  "major": "9",
+  "minor": "7",
+  "setup": { "operators": "3", "deck": "Maroon", "window": "12/6", "note": "Anders is recommended: his scuba gear gives a third way across the river." },
+  "stealth": { "easy": 8, "normal": 7, "hard": 6 },
+  "board": {
+   "tiles": [
+    { "t": "7A", "c": 0, "r": 0, "rot": 180 },
+    { "t": "1A", "c": 1, "r": 0, "rot": 180 },
+    { "t": "10B", "c": 2, "r": 0, "rot": 180 },
+    { "t": "5B", "c": 0, "r": 1, "rot": 0 },
+    { "t": "3A", "c": 1, "r": 1, "rot": 0 },
+    { "t": "8B", "c": 2, "r": 1, "rot": 0 }
+   ],
+   "pieces": [
+    { "uid": "e1", "p": "entry-exit", "x": 22, "y": 20, "rot": 0, "face": 0 },
+    { "uid": "s1", "p": "spawn-white", "x": -4, "y": 3, "rot": 270, "face": 0 },
+    { "uid": "s2", "p": "spawn-black", "x": 23, "y": -4, "rot": 0, "face": 0 },
+    { "uid": "s3", "p": "spawn-mixed", "x": 3, "y": -4, "rot": 0, "face": 0 },
+    { "uid": "n1", "p": "resistance", "x": 6, "y": 7, "rot": 0, "label": "RAF Navigator", "obj": true },
+    { "uid": "o1", "p": "axis-officer", "x": 12, "y": 7, "rot": 90, "obj": true },
+    { "uid": "g1", "p": "axis-guard", "x": 14, "y": 12, "rot": 0 },
+    { "uid": "g2", "p": "axis-guard", "x": 15, "y": 17, "rot": 180 },
+    { "uid": "g3", "p": "axis-guard", "x": 15, "y": 6, "rot": 270 },
+    { "uid": "b1", "p": "rowboat", "x": 3, "y": 16, "rot": 0, "face": 0 },
+    { "uid": "f1", "p": "fuel-barrel", "x": 8, "y": 6, "rot": 0 },
+    { "uid": "f2", "p": "fuel-barrel", "x": 17, "y": 11, "rot": 0 },
+    { "uid": "v1", "p": "motorbike", "x": 20, "y": 4, "rot": 270, "face": 0, "role": "patrol" },
+    { "uid": "v2", "p": "truck", "x": 31, "y": 4, "rot": 180, "face": 0, "role": "convoy" }
+   ],
+   "routes": [
+    { "uid": "r1", "style": "convoy", "pts": [[31, 4], [-1, 4]] },
+    { "uid": "r2", "style": "patrol", "pts": [[29, 5], [0, 5]] }
+   ]
+  }
+ }
+}

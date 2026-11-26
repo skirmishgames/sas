@@ -31,7 +31,9 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
 .brand-text b { font: 17px var(--display); text-transform: uppercase; letter-spacing: .5px; }
 .brand-text small { color: var(--khaki); font-size: 12px; letter-spacing: .4px; }
-.tabs { display: flex; gap: 4px; margin-left: auto; }
+.tabs { display: flex; gap: 4px; margin-left: 18px; min-width: 0; }
+.theme-btn { margin-left: auto; flex: none; }
+.tabs .sm { display: none; }
 .tabs a { color: #ddd; text-decoration: none; padding: 7px 12px; border-radius: 99px; font: 14px var(--display); text-transform: uppercase; letter-spacing: .4px; }
 .tabs a[aria-current="page"] { background: var(--crimson); color: #fff; }
 .tabs a:hover { color: #fff; }
@@ -214,6 +216,24 @@ legend { font: 12px var(--display); text-transform: uppercase; letter-spacing: .
 .mdet-actions { margin-top: 12px; }
 @media (max-width: 760px) { .mdetail { grid-template-columns: 1fr; } .mfilters select { flex: 1 1 45%; max-width: none; } .mfilters { position: static; } }
 
+/* fan ops */
+.ops { overflow: auto; height: 100%; }
+.ops .mhead p { max-width: 860px; }
+.ops .chips { width: auto; }
+.opmeta { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; }
+.status { font: 11.5px var(--display); text-transform: uppercase; letter-spacing: .5px; padding: 3px 8px; border-radius: 99px; }
+.status-untested { background: var(--amber); color: #231f20; }
+.status-playtested { background: var(--olive-2); color: #fff; }
+.focus { font-size: 13.5px; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; margin-top: 6px; background: var(--paper); }
+.focus summary { cursor: pointer; font-weight: 700; }
+.focus ol, .focus ul { margin: 6px 0 2px; padding-left: 20px; }
+.focus li { margin-bottom: 4px; }
+.opactions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.opactions a.btn { text-decoration: none; color: inherit; }
+.opcard { cursor: default; }
+.opcard .mthumb { aspect-ratio: 4 / 3; }
+.opcard .mthumb img { object-fit: contain; background: #2b2a22; }
+
 /* faq */
 .faq { overflow: auto; height: 100%; }
 .ffilters { flex-direction: row; }
@@ -271,13 +291,28 @@ mark { background: #f2ae1366; color: inherit; border-radius: 2px; }
 }
 @media (max-width: 560px) {
   .brand-text { display: none; }
-  .tabs { margin-left: auto; }
+  .tabs { margin-left: 6px; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs a { flex: none; }
+  .topbar { gap: 6px; padding: 0 8px; }
+  .brand-mark { font-size: 20px; padding: 5px 7px 4px; }
+  .tabs { gap: 0; margin-left: 4px; }
+  .tabs a { padding: 6px 6px; font-size: 11.5px; letter-spacing: 0; }
+  .tabs .lg { display: none; }
+  .tabs .sm { display: inline; }
+  .topbar .icon-btn { min-width: 32px; height: 32px; }
+}
+@media (max-width: 420px) {
+  .tabs a { padding: 6px 5px; font-size: 11px; }
+}
+@media (max-width: 370px) {
+  .tabs a { padding: 6px 4px; font-size: 10.5px; }
+  .brand-mark { font-size: 18px; padding: 4px 6px 3px; }
 }
 @media (max-width: 420px) {
   .topbar { gap: 6px; padding: 0 8px; }
   .brand-mark { font-size: 20px; padding: 5px 7px 4px; }
-  .tabs { gap: 0; }
-  .tabs a { padding: 6px 7px; font-size: 11.5px; letter-spacing: .2px; }
+
   .topbar .icon-btn { min-width: 32px; height: 32px; }
   .brand-text b { font-size: 14px; }
   .btn { padding: 6px 10px; font-size: 13px; }

@@ -136,15 +136,15 @@ async function run(viewport, label) {
   // mission index
   await page.click('.tabs a[data-view="missions"]');
   await page.waitForTimeout(400);
-  const total = await page.$$eval('.mcard', c => c.length);
+  const total = await page.$$eval('#mGrid .mcard', c => c.length);
   assert(total >= 29, `${label}: mission index lists ${total} missions`);
   await page.fill('#mSearch', 'fortress');
   await page.waitForTimeout(150);
-  assert((await page.$$eval('.mcard', c => c.length)) === 1, `${label}: mission search`);
+  assert((await page.$$eval('#mGrid .mcard', c => c.length)) === 1, `${label}: mission search`);
   await page.fill('#mSearch', '');
   await page.selectOption('#fSeries', 'Kickstarter');
-  assert((await page.$$eval('.mcard', c => c.length)) === 6, `${label}: series filter`);
-  await page.click('.mcard');
+  assert((await page.$$eval('#mGrid .mcard', c => c.length)) === 6, `${label}: series filter`);
+  await page.click('#mGrid .mcard');
   await page.waitForTimeout(200);
   assert(await page.isVisible('#missionDlg'), `${label}: mission detail opens`);
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-mission.png` });
@@ -156,6 +156,22 @@ async function run(viewport, label) {
   await page.waitForTimeout(300);
   await page.click('#mClear');
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-missions.png` });
+
+  // Fan Ops
+  await page.click('.tabs a[data-view="ops"]');
+  await page.waitForTimeout(400);
+  assert((await page.$$eval('.opcard', c => c.length)) >= 1, `${label}: Fan Ops lists missions`);
+  assert(await page.$eval('.opcard .status', e => e.textContent) === 'Needs playtest', `${label}: playtest status shown`);
+  const href = await page.$eval('.opcard a[href^="mailto:"]', a => a.href);
+  assert(decodeURIComponent(href).includes('What to test') || decodeURIComponent(href).includes('Answer:'), `${label}: feedback email template`);
+  await page.click('#opsStatus [data-st="playtested"]');
+  assert((await page.$$eval('.opcard', c => c.length)) === 0, `${label}: status filter`);
+  await page.click('#opsStatus [data-st=""]');
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/${label}-ops.png` });
+  await page.click('.opcard [data-act="open"]');
+  await page.waitForTimeout(700);
+  const opened = await page.evaluate(() => [window.__sas.mission.title, window.__sas.mission.board.tiles.length, location.hash]);
+  assert(opened[0] === 'Bird in the Hand' && opened[1] === 6 && opened[2] === '#designer', `${label}: fan mission opens in designer`);
 
   // FAQ and errata
   await page.click('.tabs a[data-view="faq"]');

@@ -1,9 +1,10 @@
-import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=8c0cdd94';
-import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=8c0cdd94';
-import { renderSheet, fontsReady } from './sheet.js?v=8c0cdd94';
-import { initMissions, detail as missionDetail } from './missions.js?v=8c0cdd94';
-import { initFaq, focusFaq } from './faq.js?v=8c0cdd94';
-import * as store from './store.js?v=8c0cdd94';
+import { TILES, TILE, PIECES, PIECE, PALETTE_GROUPS, ROLES, BOXES, MISSION_TYPES, EVENT_DECKS, recommendedFor } from './data/catalog.js?v=d2fa9c1b';
+import { Editor, emptyBoard, pieceSize, pieceSrc, pieceName, keyLabel, isObjective, boardCanvas, uid, preload, drawPiece } from './board.js?v=d2fa9c1b';
+import { renderSheet, fontsReady } from './sheet.js?v=d2fa9c1b';
+import { initMissions, detail as missionDetail } from './missions.js?v=d2fa9c1b';
+import { initFaq, focusFaq } from './faq.js?v=d2fa9c1b';
+import { initFanOps, focusOp } from './fanops.js?v=d2fa9c1b';
+import * as store from './store.js?v=d2fa9c1b';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -417,10 +418,11 @@ $('#board').addEventListener('pointerup', () => setTimeout(updateBrushBar, 0));
 function route() {
   const h = location.hash.replace(/^#/, '');
   const view = h.split('&')[0] || 'designer';
-  const v = ['designer', 'missions', 'faq', 'about'].includes(view) ? view : 'designer';
+  const v = ['designer', 'missions', 'ops', 'faq', 'about'].includes(view) ? view : 'designer';
   $$('.view').forEach(s => { s.hidden = s.id !== 'view-' + v; });
   $$('.tabs a').forEach(a => { if (a.dataset.view === v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   if (v === 'designer') editor.resize();
+  if (v === 'ops') { const oid = (h.match(/&id=([\w-]+)/) || [])[1]; if (oid) setTimeout(() => focusOp(oid), 80); }
   if (v === 'faq') { const fq = (h.match(/&q=([\w-]+)/) || [])[1]; if (fq) setTimeout(() => focusFaq(fq), 50); }
   if (v !== 'missions' && $('#missionDlg').open) $('#missionDlg').close();
 }
@@ -447,6 +449,11 @@ async function useTemplate(src) {
 async function start() {
   buildPalette();
   initMissions({ template: useTemplate });
+  initFanOps({
+    parse: store.parseJSON, toast,
+    open: async mm => { if (dirty) await save(); loadMission(mm, { keepId: false }); await save(); location.hash = '#designer'; toast(`${mm.title} opened as a new mission in the designer. Your copy is saved under My missions.`, 5000); },
+    sheet: async mm => { toast('Drawing mission sheet...'); (await renderSheet(mm)).toBlob(b => store.downloadBlob(b, store.slug(mm.title) + '-sheet.png')); },
+  });
   initFaq({ showMission: id => { location.hash = '#missions'; setTimeout(() => missionDetail(id), 60); } });
   route();
   const share = (location.hash.match(/[&#]m=([A-Za-z0-9_-]+)/) || [])[1];
